@@ -331,6 +331,17 @@ function switchDataset(nextKey){
     $rocket.classList.add('hidden');
     $progressDot.style.opacity = '1';
     $rocket.src = DATASETS[currentDatasetKey].rocketSrc;
+    
+    // 重新绑定加载事件处理
+    $rocket.onload = ()=>{
+      $rocket.classList.remove('hidden');
+      $progressDot.style.opacity = '0';
+    };
+    $rocket.onerror = ()=>{
+      // 图片失败则保留 progressDot
+      $rocket.classList.add('hidden');
+      $progressDot.style.opacity = '1';
+    };
   }
 
   // 重建几何并定位
