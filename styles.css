@@ -195,6 +195,12 @@ main.app{
   background:#fff;
   overflow:auto;
 }
+
+/* 标题行：标题 + 切换按钮 */
+.panel-header .title-row{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+
 .panel-header h1{ margin:6px 0 4px 0; font-size:20px; }
 .subtitle{ margin:0; color:var(--muted); font-size:13px; }
 

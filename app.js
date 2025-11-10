@@ -1,83 +1,141 @@
 'use strict';
 
 /**
- * SpaceX 三轮案例数据（全部来自用户提供报告）
- * 每轮固定三阶段：A 实践-感性；B 理性认识；C 理性到实践的飞跃
+ * 数据集：SpaceX 与 长征五号
+ * 每个数据集包含：显示标题、文档标题、火箭图、三轮 A/B/C 阶段内容
  */
-const CYCLES = [
-  {
-    title: 'Falcon 1',
-    year: '2006—2008',
-    stages: [
+const DATASETS = {
+  cz5: {
+    key: 'cz5',
+    displayName: '长征五号',
+    headerTitle: '长征五号：实践—认识—再实践的螺旋',
+    docTitle: '实践与认识的辩证运动：长征五号 的螺旋上升',
+    rocketSrc: '长五.png',
+    cycles: [
       {
-        id: 'A',
-        name: '实践-感性',
-        summary: '泄漏、振动、分离失灵',
-        detail: '2006泄漏/管腐蚀；2007振动致泵故障；2008分离时机与推力不匹配致碰撞。'
+        title: '阶段一·跟跑',
+        year: '2006—2017',
+        stages: [
+          { id:'A', name:'实践-感性', summary:'立项与十年攻坚',
+            detail:'2006立项，前期论证近20年；攻克247项关键新技、90%新研产品，箭体直径跨越至5米，补齐大火箭短板。' },
+          { id:'B', name:'理性认识', summary:'遥一首飞成功',
+            detail:'2016-11-03 遥一首飞成功，送实践十七入轨，运力跻身世界先进，实现从零到一。' },
+          { id:'C', name:'理性到实践的飞跃', summary:'成功中的异常',
+            detail:'飞行中二级YF-75D提前关机，依靠远征二号延长燃烧入轨，提示系统复杂性与潜在风险，进入新一轮实践检验。' }
+        ]
       },
       {
-        id: 'B',
-        name: '理性认识',
-        summary: '振动—燃料矛盾',
-        detail: '归纳结构脆弱、燃料系统不稳；确立“振动—燃料流动”为主要矛盾。'
+        title: '阶段二·并跑',
+        year: '2017—2019',
+        stages: [
+          { id:'A', name:'实践-感性', summary:'遥二失利',
+            detail:'2017-07-02 遥二在约346秒推力骤降导致失利；获取丰富遥测、试验与仿真数据，沉淀感性材料。' },
+          { id:'B', name:'理性认识', summary:'归零溯因',
+            detail:'启动“归零双五条”，故障树排查50+项；40余次/15000+秒关键试验与20000+地面试验，指向YF-77设计薄弱引发涡轮泵局部异常。' },
+          { id:'C', name:'理性到实践的飞跃', summary:'改进复飞',
+            detail:'采取“局部改进”与全国联攻，质量目标“超越最高标准”，洁净度优于要求5倍；2019-12-27 遥三成功复飞，“王者归来”。' }
+        ]
       },
       {
-        id: 'C',
-        name: '理性到实践的飞跃',
-        summary: '密封与分离优化',
-        detail: '泄漏→耐蚀材料/密封；振动→减振+推力控制；分离→重设机制+实时监测。'
+        title: '阶段三·领跑',
+        year: '2020—至今',
+        stages: [
+          { id:'A', name:'实践-感性', summary:'重大任务应用',
+            detail:'2020 长五B首飞；遥四发射天问一号；遥五发射嫦娥五号；2021起发射天和/问天/梦天，托举空间站建成。' },
+          { id:'B', name:'理性认识', summary:'方法论升级',
+            detail:'深空与在轨数据沉淀新感性材料，优化轨道控制与系统可靠性，验证认识的相对性与无限性，推动“跟跑→并跑→领跑”。' },
+          { id:'C', name:'理性到实践的飞跃', summary:'系列化领跑',
+            detail:'形成系列化平台，支撑探月三期、天问三/四号、巡天望远镜与未来载人登月；十余次成功，成功率95%以上。' }
+        ]
       }
     ]
   },
-  {
-    title: 'Falcon 9',
-    year: '2010—2015',
-    stages: [
+  spacex: {
+    key: 'spacex',
+    displayName: 'SpaceX',
+    headerTitle: 'SpaceX：实践—认识—再实践的螺旋',
+    docTitle: '实践与认识的辩证运动：SpaceX 的螺旋上升',
+    rocketSrc: '火箭.png',
+    cycles: [
       {
-        id: 'A',
-        name: '实践-感性',
-        summary: '海上倾覆与故障',
-        detail: '13-14海上倾覆：腿不稳、风干扰；15-01液压耗尽舵失效；15-06支柱断裂致二级解体。'
+        title: 'Falcon 1',
+        year: '2006—2008',
+        stages: [
+          {
+            id: 'A',
+            name: '实践-感性',
+            summary: '泄漏、振动、分离失灵',
+            detail: '2006泄漏/管腐蚀；2007振动致泵故障；2008分离时机与推力不匹配致碰撞。'
+          },
+          {
+            id: 'B',
+            name: '理性认识',
+            summary: '振动—燃料矛盾',
+            detail: '归纳结构脆弱、燃料系统不稳；确立“振动—燃料流动”为主要矛盾。'
+          },
+          {
+            id: 'C',
+            name: '理性到实践的飞跃',
+            summary: '密封与分离优化',
+            detail: '泄漏→耐蚀材料/密封；振动→减振+推力控制；分离→重设机制+实时监测。'
+          }
+        ]
       },
       {
-        id: 'B',
-        name: '理性认识',
-        summary: '着陆不确定性',
-        detail: '将风、液压压力与控制耦合视为主要矛盾；建立仿真以预测着陆动态。'
+        title: 'Falcon 9',
+        year: '2010—2015',
+        stages: [
+          {
+            id: 'A',
+            name: '实践-感性',
+            summary: '海上倾覆与故障',
+            detail: '13-14海上倾覆：腿不稳、风干扰；15-01液压耗尽舵失效；15-06支柱断裂致二级解体。'
+          },
+          {
+            id: 'B',
+            name: '理性认识',
+            summary: '着陆不确定性',
+            detail: '将风、液压压力与控制耦合视为主要矛盾；建立仿真以预测着陆动态。'
+          },
+          {
+            id: 'C',
+            name: '理性到实践的飞跃',
+            summary: '腿稳、冗余与算法',
+            detail: '腿→结构优化、增液压储备、自动调节；舵→冗余+算法校正；支柱→材料测试、固定改进、地面模拟。'
+          }
+        ]
       },
       {
-        id: 'C',
-        name: '理性到实践的飞跃',
-        summary: '腿稳、冗余与算法',
-        detail: '腿→结构优化、增液压储备、自动调节；舵→冗余+算法校正；支柱→材料测试、固定改进、地面模拟。'
-      }
-    ]
-  },
-  {
-    title: 'Starship',
-    year: '2020—至今',
-    stages: [
-      {
-        id: 'A',
-        name: '实践-感性',
-        summary: '点火不均与热挑战',
-        detail: '2023-04点火不均/泄漏致爆；2023-11二级后自毁：热防护失效、氧阀问题；2024-25再入热盾破损、姿控失灵。'
-      },
-      {
-        id: 'B',
-        name: '理性认识',
-        summary: '高热—结构统一',
-        detail: '提炼“再入高热—结构完整”对立统一规律；建立热流与总体动力学模型。'
-      },
-      {
-        id: 'C',
-        name: '理性到实践的飞跃',
-        summary: '集群与热盾迭代',
-        detail: '点火→优化发动机集群/同步点火；热防护→陶瓷瓦+冷却升级；姿控→传感器+算法控制、密集地面/飞行试验。'
+        title: 'Starship',
+        year: '2020—至今',
+        stages: [
+          {
+            id: 'A',
+            name: '实践-感性',
+            summary: '点火不均与热挑战',
+            detail: '2023-04点火不均/泄漏致爆；2023-11二级后自毁：热防护失效、氧阀问题；2024-25再入热盾破损、姿控失灵。'
+          },
+          {
+            id: 'B',
+            name: '理性认识',
+            summary: '高热—结构统一',
+            detail: '提炼“再入高热—结构完整”对立统一规律；建立热流与总体动力学模型。'
+          },
+          {
+            id: 'C',
+            name: '理性到实践的飞跃',
+            summary: '集群与热盾迭代',
+            detail: '点火→优化发动机集群/同步点火；热防护→陶瓷瓦+冷却升级；姿控→传感器+算法控制、密集地面/飞行试验。'
+          }
+        ]
       }
     ]
   }
-];
+};
+
+// 当前数据集（默认：长征五号）
+let currentDatasetKey = 'cz5';
+let CYCLES = DATASETS[currentDatasetKey].cycles;
 
 // DOM refs
 const $svg = document.getElementById('spiralSvg');
@@ -89,6 +147,9 @@ const $bubbleSummary = document.getElementById('bubbleSummary');
 const $progressDot = document.getElementById('progressDot');
 const $rocket = document.getElementById('rocket');
 const $nodePopups = document.getElementById('nodePopups');
+
+const $headerTitle = document.getElementById('headerTitle');
+const $btnDatasetToggle = document.getElementById('btnDatasetToggle');
 
 const $cycleTitle = document.getElementById('cycleTitle');
 const $cycleYear = document.getElementById('cycleYear');
@@ -111,7 +172,7 @@ const $controls = document.getElementById('controls');
 const $controlsTitle = document.getElementById('controlsTitle');
 
 // 配置开关与常量
-const ENABLE_BUBBLE = false; // 本版本禁用显示跟随概括气泡（保留 DOM 与逻辑，便于恢复）
+const ENABLE_BUBBLE = false; // 禁用概括气泡（保留 DOM 与逻辑，便于恢复）
 const STATE = Object.freeze({
   Idle: 'idle',
   Playing: 'playing',
@@ -121,7 +182,7 @@ const STAGE_IDS = ['A','B','C'];
 const NODE_THRESHOLDS = [1/6, 3/6, 5/6];
 const SAMPLES_PER_CYCLE = 800;
 const BASE_CYCLE_DURATION = 10_000; // 10s/轮（1x）
-const TYPE_SPEED_CPS = 20; // 改为每秒 20 个字符（原为 10）
+const TYPE_SPEED_CPS = 20; // 每秒 20 个字符
 const TYPE_INTERVAL_MS = Math.round(1000 / TYPE_SPEED_CPS);
 const SMALL_VIEWPORT_W = 1200; // 小屏阈值
 const VIZ_SHIFT_Y = 100; // 整体下移 100px
@@ -150,6 +211,10 @@ const popupState = {
   cycles: Array.from({length: CYCLES.length}, () => Array(3).fill(null))
 };
 
+function getCurrentDataset(){
+  return DATASETS[currentDatasetKey];
+}
+
 // 初始化
 init();
 function init(){
@@ -160,6 +225,12 @@ function init(){
   $btnPauseNext.addEventListener('click', onPauseNextClick);
   $speedSelect.addEventListener('change', onSpeedChange);
   window.addEventListener('resize', onResize);
+
+  // 数据集切换
+  $btnDatasetToggle.addEventListener('click', ()=>{
+    const nextKey = currentDatasetKey === 'cz5' ? 'spacex' : 'cz5';
+    switchDataset(nextKey);
+  });
 
   // 键盘：空格 = 自动播放（完全等同于点击）
   window.addEventListener('keydown', (e)=>{
@@ -199,12 +270,13 @@ function init(){
     }
   }
 
-  // 概括气泡：本版本禁用显示
+  // 概括气泡：禁用显示
   if(!ENABLE_BUBBLE && $bubble){
     $bubble.classList.add('hidden');
   }
 
-  // 初始内容
+  // 初始头部与右侧内容
+  renderHeader();
   renderCyclePanel(currentCycle);
 
   // 构建几何
@@ -217,6 +289,56 @@ function init(){
   // 控制区保持折叠状态属性
   $controls.setAttribute('data-collapsed', 'true');
   $controlsTitle.setAttribute('aria-expanded', 'false');
+}
+
+/* 数据集切换 */
+function renderHeader(){
+  const ds = getCurrentDataset();
+  document.title = ds.docTitle;
+  if($headerTitle) $headerTitle.textContent = ds.headerTitle;
+  // 切换按钮文案
+  if($btnDatasetToggle){
+    const other = currentDatasetKey === 'cz5' ? 'SpaceX' : '长征五号';
+    $btnDatasetToggle.textContent = `切换到：${other}`;
+    $btnDatasetToggle.setAttribute('aria-pressed', currentDatasetKey === 'cz5' ? 'true' : 'false');
+  }
+}
+
+function switchDataset(nextKey){
+  if(!DATASETS[nextKey] || nextKey === currentDatasetKey) return;
+
+  // 停止动画
+  if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+  state = STATE.Idle;
+  pauseAtNextKeyframe = false;
+  progress = 0;
+  currentCycle = 0;
+
+  // 切换数据指针
+  currentDatasetKey = nextKey;
+  CYCLES = DATASETS[currentDatasetKey].cycles;
+
+  // 清空弹窗
+  clearAllPopups();
+
+  // 更新头部与右侧面板
+  renderHeader();
+  renderCyclePanel(currentCycle);
+
+  // 切换火箭图
+  if($rocket){
+    // 在加载新图片前显示 fallback 点
+    $rocket.classList.add('hidden');
+    $progressDot.style.opacity = '1';
+    $rocket.src = DATASETS[currentDatasetKey].rocketSrc;
+  }
+
+  // 重建几何并定位
+  buildSpiral();
+  highlightActiveCyclePath();
+  positionProgressAtCurrent();
+  updatePopupVisibilityByViewport();
+  updateUIState();
 }
 
 /* 事件处理 */
@@ -495,7 +617,7 @@ function positionProgressAtCurrent(){
     $rocket.style.transform = `translate(-50%, -50%) rotate(${angle}rad) scale(2) scaleX(${sX})`;
   }
 
-  // 概括气泡（本版本禁用显示）
+  // 概括气泡（禁用）
   updateStageBubble(pt);
 }
 
@@ -756,9 +878,9 @@ function finalizeAllToSummary(){
   }
 }
 
-/* 清空所有弹窗（从头开始时调用） */
+/* 清空所有弹窗（从头开始或切换数据集时调用） */
 function clearAllPopups(){
-  for(let c=0;c<CYCLES.length;c++){
+  for(let c=0;c<popupState.cycles.length;c++){
     for(let s=0;s<3;s++){
       const p = popupState.cycles[c][s];
       if(!p) continue;
@@ -767,7 +889,7 @@ function clearAllPopups(){
       popupState.cycles[c][s] = null;
     }
   }
-  // 清空容器，重置状态结构
+  // 清空容器，重置状态结构（使用当前数据集长度）
   $nodePopups.innerHTML = '';
   popupState.cycles = Array.from({length: CYCLES.length}, () => Array(3).fill(null));
 }

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <title>实践与认识的辩证运动：SpaceX 的螺旋上升</title>
+  <title>实践与认识的辩证运动：长征五号 的螺旋上升</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,7 +12,7 @@
       <svg id="spiralSvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="螺旋路径"></svg>
 
       <!-- 进度载具：小火箭（加载成功后会隐藏 progressDot） -->
-      <img id="rocket" class="rocket hidden" src="火箭.png" alt="" aria-hidden="true" />
+      <img id="rocket" class="rocket hidden" src="长五.png" alt="" aria-hidden="true" />
 
       <!-- 进度光点（作为兜底，不会移除） -->
       <div id="progressDot" class="progress-dot" aria-hidden="true"></div>
@@ -32,44 +32,47 @@
 
     <aside id="panel" class="panel" aria-label="信息与控制面板">
       <header class="panel-header">
-        <h1>SpaceX：实践—认识—再实践的螺旋</h1>
+        <div class="title-row">
+          <h1 id="headerTitle">长征五号：实践—认识—再实践的螺旋</h1>
+          <button id="btnDatasetToggle" class="btn" type="button" aria-pressed="true" aria-label="切换示例">切换到：SpaceX</button>
+        </div>
         <p class="subtitle">围绕“实践与认识的辩证运动及其规律”的案例展示</p>
       </header>
 
       <section id="cycleInfo" class="cycle-info">
         <div class="cycle-meta">
-          <h2 id="cycleTitle">Falcon 1</h2>
-          <div id="cycleYear" class="year">2006—2008</div>
+          <h2 id="cycleTitle">阶段一·跟跑</h2>
+          <div id="cycleYear" class="year">2006—2017</div>
         </div>
         <div id="cycleDetails" class="details">
           <div class="detail-item">
             <div class="detail-head">
               <span class="stage-badge">A</span>
               <span class="stage-title">实践-感性</span>
-              <span class="stage-brief" id="detailBriefA">泄漏、振动、分离失灵</span>
+              <span class="stage-brief" id="detailBriefA">立项与十年攻坚</span>
             </div>
             <div class="detail-body" id="detailTextA">
-              2006泄漏/管腐蚀；2007振动致泵故障；2008分离时机与推力不匹配致碰撞。
+              2006立项，前期论证近20年；攻克247项关键新技、90%新研产品，箭体直径跨越至5米，补齐大火箭短板。
             </div>
           </div>
           <div class="detail-item">
             <div class="detail-head">
               <span class="stage-badge">B</span>
               <span class="stage-title">理性认识</span>
-              <span class="stage-brief" id="detailBriefB">振动—燃料矛盾</span>
+              <span class="stage-brief" id="detailBriefB">遥一首飞成功</span>
             </div>
             <div class="detail-body" id="detailTextB">
-              归纳结构脆弱、燃料系统不稳；确立“振动—燃料流动”为主要矛盾。
+              2016-11-03 遥一首飞成功，送实践十七入轨，运力跻身世界先进，实现从零到一。
             </div>
           </div>
           <div class="detail-item">
             <div class="detail-head">
               <span class="stage-badge">C</span>
               <span class="stage-title">理性到实践的飞跃</span>
-              <span class="stage-brief" id="detailBriefC">密封与分离优化</span>
+              <span class="stage-brief" id="detailBriefC">成功中的异常</span>
             </div>
             <div class="detail-body" id="detailTextC">
-              泄漏→耐蚀材料/密封；振动→减振+推力控制；分离→重设机制+实时监测。
+              飞行中二级YF-75D提前关机，依靠远征二号延长燃烧入轨，提示系统复杂性与潜在风险，进入新一轮实践检验。
             </div>
           </div>
         </div>
