@@ -1,0 +1,268 @@
+:root{
+  --bg:#ffffff;
+  --text:#222;
+  --muted:#666;
+  --line:#dcdfe6;
+  --accent:#1473e6;
+  --accent-soft:#e6f0ff;
+  --good:#16a34a;
+  --warn:#b45309;
+  --panel-w:420px;
+
+  --popup-z: 4;
+  --bubble-z: 3;
+  --rocket-z: 3;
+  --dot-z: 2;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  height:100%;
+}
+main.app{
+  display:grid;
+  grid-template-columns: 1fr var(--panel-w);
+  height:100vh;
+  overflow:hidden;
+}
+
+/* 左侧可视化 */
+.viz{
+  position:relative;
+  background:var(--bg);
+  border-right:1px solid var(--line);
+}
+#spiralSvg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* 路径与节点 */
+.spiral-path{
+  fill:none;
+  stroke: #e5e7eb; /* 浅灰 */
+  stroke-width:2;
+}
+.spiral-path.active{
+  stroke: var(--accent);
+  stroke-width:2.5;
+}
+.stage-node{
+  fill:#fff;
+  stroke:#94a3b8;
+  stroke-width:1.5;
+}
+.stage-label{
+  font-size:11px;
+  fill:#4b5563;
+  user-select:none;
+}
+
+/* 进度载具：火箭 */
+.rocket{
+  position:absolute;
+  width:48px; height:48px; /* 基础尺寸，可根据需要微调 */
+  transform-origin:50% 50%;
+  left:0; top:0;
+  margin-left:-24px; margin-top:-24px; /* 以中心对齐 */
+  pointer-events:none;
+  z-index: var(--rocket-z);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  transition: transform 0.06s linear;
+  opacity:1; visibility:visible;
+}
+.rocket.hidden{ opacity:0; visibility:hidden; }
+
+/* 进度光点（兜底） */
+.progress-dot{
+  position:absolute;
+  width:12px; height:12px;
+  margin-left:-6px; margin-top:-6px; /* 以中心对齐 */
+  background: var(--accent);
+  border-radius:50%;
+  box-shadow: 0 0 0 6px rgba(20,115,230,0.08), 0 2px 6px rgba(0,0,0,0.2);
+  pointer-events:none;
+  transition: transform 0.15s ease;
+  z-index: var(--dot-z);
+}
+
+/* 概括气泡（跟随小点） */
+.bubble{
+  position:absolute;
+  min-width: 220px;
+  max-width: 320px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding:10px 12px;
+  opacity:1; visibility:visible;
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  transform: translateY(0);
+  pointer-events:none; /* 不阻挡交互 */
+  z-index: var(--bubble-z);
+}
+.bubble.hidden{
+  opacity:0;
+  visibility:hidden;
+  transform: translateY(6px);
+}
+.bubble-stage{
+  display:flex; align-items:center; gap:8px; margin-bottom:4px;
+}
+.stage-badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:20px; height:20px; border-radius:50%;
+  background: var(--accent);
+  color:#fff; font-weight:600; font-size:12px;
+}
+.bubble-title{
+  font-weight:600; font-size:14px;
+}
+.bubble-summary{
+  font-size:14px; color:var(--muted);
+}
+
+/* 节点弹出框容器与卡片 */
+.node-popups{
+  position:absolute;
+  inset:0;
+  pointer-events:none; /* 只做展示 */
+  z-index: var(--popup-z);
+}
+
+.node-popup{
+  position:absolute;
+  min-width: 220px;
+  max-width: 320px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding:10px 12px;
+  font-size:14px;
+  color:#333;
+  line-height:1.45;
+  pointer-events:none;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.node-popup .np-head{
+  display:flex; align-items:center; gap:8px; margin-bottom:6px;
+}
+.node-popup .np-title{ font-weight:600; font-size:14px; }
+.node-popup .np-body{ font-size:14px; color:#333; }
+
+/* 小箭头（不连线） */
+.node-popup::after{
+  content:"";
+  position:absolute;
+  width:0; height:0;
+  border-style: solid;
+  /* 默认隐藏，依 data-arrow 决定方向 */
+  opacity:1;
+}
+.node-popup[data-arrow="left"]::after{
+  right:-8px; top:14px;
+  border-width:6px 0 6px 8px;
+  border-color: transparent transparent transparent var(--line);
+  /* 外边框 */
+}
+.node-popup[data-arrow="right"]::after{
+  left:-8px; top:14px;
+  border-width:6px 8px 6px 0;
+  border-color: transparent var(--line) transparent transparent;
+}
+.node-popup[data-arrow="top"]::after{
+  bottom:-8px; left:14px;
+  border-width:8px 6px 0 6px;
+  border-color: var(--line) transparent transparent transparent;
+}
+.node-popup[data-arrow="bottom"]::after{
+  top:-8px; left:14px;
+  border-width:0 6px 8px 6px;
+  border-color: transparent transparent var(--line) transparent;
+}
+
+/* 右侧面板 */
+.panel{
+  padding:18px 18px 14px 18px;
+  background:#fff;
+  overflow:auto;
+}
+.panel-header h1{ margin:6px 0 4px 0; font-size:20px; }
+.subtitle{ margin:0; color:var(--muted); font-size:13px; }
+
+.cycle-info{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed var(--line);
+}
+.cycle-meta{
+  display:flex; align-items:baseline; justify-content:space-between;
+}
+#cycleTitle{ margin:10px 0 4px 0; font-size:18px; }
+.year{ color:var(--muted); font-size:13px; }
+
+.details{ margin-top:8px; display:flex; flex-direction:column; gap:10px; }
+.detail-item{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 12px;
+  background: #fff;
+}
+.detail-head{
+  display:flex; align-items:center; gap:8px; margin-bottom:6px;
+}
+.stage-title{ font-weight:600; }
+.stage-brief{ color:var(--muted); font-size:13px; margin-left:auto; }
+.detail-body{ font-size:14px; line-height:1.45; color:#333; }
+
+/* 控制区 */
+.controls{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px dashed var(--line);
+}
+.controls-title{
+  margin:0 0 8px 0;
+  font-size:14px;
+  color:#111;
+  user-select:none;
+  cursor:pointer;
+}
+.controls-body{ /* 默认被 data-collapsed 控制隐藏 */
+  transition: opacity .2s ease;
+}
+.controls[data-collapsed="true"] .controls-body{ display:none; opacity:0; }
+.controls[data-collapsed="false"] .controls-body{ display:block; opacity:1; }
+
+.status-line{ color:var(--muted); font-size:13px; margin-bottom:8px; }
+.btn-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+.btn{
+  appearance:none; border:1px solid var(--line);
+  background:#fff; color:#111;
+  padding:8px 12px; border-radius:8px;
+  cursor:pointer; font-size:14px;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.btn[disabled]{ opacity:.5; cursor:not-allowed; }
+.btn.primary{ background: var(--accent); color:#fff; border-color: var(--accent); }
+.btn:active{ transform: translateY(1px); }
+.btn[aria-pressed="true"]{ background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+.speed-row{ display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+.select{
+  padding:6px 10px; border-radius:8px; border:1px solid var(--line);
+  background:#fff; font-size:14px;
+}
+.hint{ color:var(--muted); font-size:12px; line-height:1.4; margin-top:4px; }
+
+/* 滚动条优化（可选） */
+.panel::-webkit-scrollbar{ width:10px; }
+.panel::-webkit-scrollbar-thumb{ background:#e6e9ef; border-radius:8px; }

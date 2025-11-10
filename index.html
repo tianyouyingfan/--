@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>实践与认识的辩证运动：SpaceX 的螺旋上升</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section id="viz" class="viz" aria-label="螺旋上升可视化">
+      <svg id="spiralSvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="螺旋路径"></svg>
+
+      <!-- 进度载具：小火箭（加载成功后会隐藏 progressDot） -->
+      <img id="rocket" class="rocket hidden" src="火箭.png" alt="" aria-hidden="true" />
+
+      <!-- 进度光点（作为兜底，不会移除） -->
+      <div id="progressDot" class="progress-dot" aria-hidden="true"></div>
+
+      <!-- 跟随小点的“概括气泡”（保留，不移除） -->
+      <div id="bubble" class="bubble hidden" role="dialog" aria-live="polite">
+        <div class="bubble-stage">
+          <span id="bubbleStageBadge" class="stage-badge">A</span>
+          <span id="bubbleStageTitle" class="bubble-title">实践-感性</span>
+        </div>
+        <div id="bubbleSummary" class="bubble-summary">概括文字</div>
+      </div>
+
+      <!-- 节点弹出框容器（A/B/C 的详情或概括卡片） -->
+      <div id="nodePopups" class="node-popups" aria-live="polite"></div>
+    </section>
+
+    <aside id="panel" class="panel" aria-label="信息与控制面板">
+      <header class="panel-header">
+        <h1>SpaceX：实践—认识—再实践的螺旋</h1>
+        <p class="subtitle">围绕“实践与认识的辩证运动及其规律”的案例展示</p>
+      </header>
+
+      <section id="cycleInfo" class="cycle-info">
+        <div class="cycle-meta">
+          <h2 id="cycleTitle">Falcon 1</h2>
+          <div id="cycleYear" class="year">2006—2008</div>
+        </div>
+        <div id="cycleDetails" class="details">
+          <div class="detail-item">
+            <div class="detail-head">
+              <span class="stage-badge">A</span>
+              <span class="stage-title">实践-感性</span>
+              <span class="stage-brief" id="detailBriefA">泄漏、振动、分离失灵</span>
+            </div>
+            <div class="detail-body" id="detailTextA">
+              2006泄漏/管腐蚀；2007振动致泵故障；2008分离时机与推力不匹配致碰撞。
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-head">
+              <span class="stage-badge">B</span>
+              <span class="stage-title">理性认识</span>
+              <span class="stage-brief" id="detailBriefB">振动—燃料矛盾</span>
+            </div>
+            <div class="detail-body" id="detailTextB">
+              归纳结构脆弱、燃料系统不稳；确立“振动—燃料流动”为主要矛盾。
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-head">
+              <span class="stage-badge">C</span>
+              <span class="stage-title">理性到实践的飞跃</span>
+              <span class="stage-brief" id="detailBriefC">密封与分离优化</span>
+            </div>
+            <div class="detail-body" id="detailTextC">
+              泄漏→耐蚀材料/密封；振动→减振+推力控制；分离→重设机制+实时监测。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 控制区：默认折叠，点击“小标题”展开 -->
+      <section class="controls" id="controls" data-collapsed="true">
+        <h3 id="controlsTitle" class="controls-title" role="button" aria-expanded="false" tabindex="0">控制区</h3>
+        <div class="controls-body">
+          <div class="status-line">
+            <span id="modeText">状态：待机</span>
+          </div>
+          <div class="btn-row">
+            <button id="btnPlay" class="btn primary" type="button">自动播放</button>
+            <button id="btnAutoPause" class="btn" type="button" aria-pressed="false">自动暂停：关</button>
+            <button id="btnNext" class="btn" type="button" disabled>下一个</button>
+            <button id="btnPauseNext" class="btn" type="button" disabled>暂停（下一帧）</button>
+          </div>
+          <div class="speed-row">
+            <label for="speedSelect">速度：</label>
+            <select id="speedSelect" class="select">
+              <option value="0.5">0.5x 更慢</option>
+              <option value="0.75">0.75x</option>
+              <option value="1">1x 默认</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5" selected>1.5x</option>
+              <option value="2">2x 更快</option>
+            </select>
+          </div>
+          <p class="hint">说明：每轮末尾为关键帧，会自动停住并展开详情；开启“自动暂停”后可使用“下一个”逐轮推进。第三轮末尾“下一个”将置灰。</p>
+        </div>
+      </section>
+    </aside>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
